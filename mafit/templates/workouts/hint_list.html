@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+<html lang="ru">
+  <body>
+    <main>
+      {% block content %}
+        <div class="container py-5">
+          <h1>Советы</h1>
+          <article>
+            
+            {% for object in object_list %}
+              <ul>
+                <li>
+                  <span style="color:gray">{{object.name|upper}} </span> 
+                </li>
+                
+                  {{object.text|linebreaks}}
+                
+              </ul>
+              {% endfor%}
+          </article>
+        </div>
+      {% endblock%}
+    </main>
+  </body>

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load thumbnail%}
+<html lang="ru">
+  <head>
+    {% block title %}
+      <title>Тренировки</title>
+    {% endblock %}
+  </head>
+  <body>
+    <main>
+      {% block content %}
+         <div class="container py-5">
+            <h1>Тренировки
+              {% if user.is_authenticated %} 
+          <a
+            class="btn btn-lg btn-light"
+            href="{% url 'workouts:workout_create' %}" role="button"
+          >
+            +
+          </a> {% endif%}
+          <br> </h1>
+          <article>
+            {% for object in object_list %}
+              <ul>
+                <li>
+                <a href= "{% url "workouts:workout_detail" object.id %}"> {{object.name}}</a> 
+                </li>
+               Упражнения: 
+                  {% for exercise in object.exercises.all%}
+                    {{ exercise }}
+                  {% endfor%}
+                
+                   <br>
+                  {% for tag in object.tags.all%}
+                  <span style="color:gray">{{ tag }} </span>   
+                  {% endfor%}
+                
+
+               
+                 
+                
+              </ul>
+              {% endfor%}
+          </article>
+         </div>
+      {% endblock%}
+    </main>
+  </body>

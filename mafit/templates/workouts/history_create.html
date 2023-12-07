@@ -1,0 +1,111 @@
+{% load static %}
+
+<!DOCTYPE html> 
+<html lang="ru">
+  <head>
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    {% block title %}
+      <title>Сохранение истории</title>
+    {% endblock %}
+  </head>
+  <body>
+    <header>
+      {% include "includes/header.html" %}
+    </header>
+    <main>
+      {% block content %}
+      <div class="container">
+      <form method="post" action="{% url 'workouts:history_create' %}">
+        {% csrf_token %}
+         
+                    <small id="id_name-help" class="form-text text-muted">
+                      {{ form.date.help_text }}
+                    </small>{{ form.date}} 
+                    <small id="id_workout-help" class="form-text text-muted">
+                      {{ form.workout.help_text }}
+                    </small>{{ form.workout}} 
+        
+        {{ formset.management_form }}
+        {{ formset.non_form_errors }}
+        <div class="container py-5">
+        {% for form in formset %}
+        <div class="d-flex py-1 inline {{ formset.prefix }}">
+          <div>{{form.exercises.help_text}}: {{ form.exercises }}</div>
+          <div class="ml-4">{{form.sets.help_text}}: {{ form.sets }}</div>
+          <div class="ml-4">{{form.reps.help_text}}: {{ form.reps }}</div>
+          <div class="ml-4">{{form.weight.help_text}}: {{ form.weight }}</div>
+          {% if formset.can_delete %}
+              <div class="ml-4">{{ form.DELETE }} {{ form.DELETE.label }}</div>
+          {% endif %}
+      </div>
+
+          {% comment %} <div class="wrcf-wrap">
+
+            <div class="one-fourth">
+              {{ form.exercises }}   
+            <small id="id_exercises-help" class="form-text text-muted">
+              {{ form.exercises.help_text }}
+            </div>
+            
+            <div class="one-fourth">
+
+              {{ form.sets }}  
+              <small id="id_sets-help" class="form-text text-muted">
+                {{ form.sets.help_text }}
+              </small>
+            </div>
+            <div class="one-fourth">
+              {{ form.reps }}  
+            <small id="id_reps-help" class="form-text text-muted">
+              {{ form.reps.help_text }}
+            </small>
+            </div>
+            <div class="one-fourth">
+              {{ form.weight }}  
+            <small id="id_weight-help" class="form-text text-muted">
+              {{ form.weight.help_text }}
+            </small>
+            </div>
+           
+           
+            
+            
+          </div> {% endcomment %}
+
+          
+         {% endfor %}
+
+        {% comment %} <table>
+          {% for form in formset %}
+        <ul>
+            <li>{{ form.exercises}}</li>
+            <li>{{ form.sets }}</li>
+            <li>{{ form.reps }}</li>
+            <li>{{ form.weight }}</li>
+            {% if formset.can_delete %}
+                <li>{{ form.DELETE }}</li>
+            {% endif %}
+            {% if formset.can_order %}
+                <li>{{ form.ORDER }}</li>
+            {% endif %}
+        </ul>
+    {% endfor %}
+        </table> {% endcomment %}
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-lg btn-light">
+
+            Сохранить 
+
+          </button> </div>
+      </form>
+    </div >
+  
+      {% endblock %}
+    </main>
+    <footer>
+      {% include "includes/footer.html" %}
+    </footer>
+  </body>
+<html>

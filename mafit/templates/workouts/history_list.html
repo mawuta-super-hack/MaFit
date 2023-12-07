@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+<html lang="ru">
+  <head>
+    {% block title %}
+      <title>История</title>
+    {% endblock %}
+  </head>
+  <body>
+    <main>
+      {% block content %}
+         <div class="container py-5">
+            <h1>История
+            <a
+            class="btn btn-lg btn-light"
+            href="{% url 'workouts:history_create' %}" role="button"
+          >
+            +
+          </a> 
+          <a
+          class="btn btn-lg btn-light"
+          href="{% url 'workouts:history_update'  %}" role="button"
+        >
+          Изменить историю
+        </a> 
+          <br></h1>
+          <div class="container">
+          
+            {% comment %} {% for object in object_list %} {% endcomment %}
+            {% comment %} <div class="row">
+              <div class="column"><span style="color:orange">Упражнение:</span> {{object.exercises}}</div>
+              <div class="column">Подходы: {{object.sets}}</div>
+              <div class="column">Повторения:  {{object.reps}}</div>
+              <div class="column">Вес:  {{object.weight}}</div>
+            </div>
+{% comment %}  {% endcomment %}
+              {% comment %} <div "row">
+                
+                <span style="color:gray">Упражнение:   </span> {{object.exercises}}
+                <span style="color:gray">Подходы:      </span>{{object.sets}}
+                <span style="color:gray">Повторения:   </span>{{object.reps}}
+                <span style="color:gray">Вес: </span>{{object.weight}}
+                <span style="color:black">{{object.history.date}}{{object.history.workout}} </span>
+                
+             
+              {% endfor%} {% endcomment %}
+              <table align="lift" width=750>
+                <thead>
+                <tr>
+                  <td><span style="color:gray">Упражнение:   </td>
+                  <td><span style="color:gray">Подходы:</td>
+                  <td><span style="color:gray">Повторения:  </td>
+                  <td><span style="color:gray">Вес:</td>
+                  <td><span style="color:gray">Дата: </td>
+                </tr> </thead>
+                {% for object in object_list %}
+                <tr>
+                  <td>{{object.exercises}}</td>
+                  <td>{{object.sets}}</td>
+                  <td>{{object.reps}}</td>
+                  <td>{{object.weight}}</td>
+                  <td>{{object.history.date}}</td>
+                </tr>{% endfor%}
+              </table>
+
+         </div> 
+         {% comment %} <div class="d-flex py-1 inline {{ formset.prefix }}">
+          <div>{{form.exercises.help_text}}: {{ form.exercises }}</div>
+          <div class="ml-4">{{form.sets.help_text}}: {{ form.sets }}</div>
+          <div class="ml-4">{{form.reps.help_text}}: {{ form.reps }}</div>
+          <div class="ml-4">{{form.weight.help_text}}: {{ form.weight }}</div> {% endcomment %}
+          
+      </div>
+      {% endblock%}
+    </main>
+  </body>

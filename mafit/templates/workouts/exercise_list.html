@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+<html lang="ru">
+  <head>
+    {% block title %}
+      <title>Упражнения</title>
+    {% endblock %}
+  </head>
+  <body>
+    <main>
+      {% block content %}
+        <div class="container py-5">
+          <h1>Упражнения 
+            {% if user.is_authenticated %} <a
+          class="btn btn-lg btn-light"
+          href="{% url 'workouts:exercise_create' %}" role="button"
+        >
+          +
+        </a>{% endif %} 
+        <br></h1>
+          <article>
+            {% for object in object_list %}
+              <ul>
+                <li>
+                 <a href= "{% url "workouts:exercise_detail" object.id %}"> {{object.name}}</a> 
+                </li>
+              
+                
+                  {% for muscle in object.muscle.all%}
+                  <span style="color:gray">{{ muscle }}</span> 
+                  {% endfor%}
+                
+              </ul>
+              {% endfor%}
+          </article>
+         </div>
+      {% endblock%}
+    </main>
+  </body>
