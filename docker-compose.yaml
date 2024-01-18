@@ -1,0 +1,77 @@
+# Файл docker-compose.yml
+
+# Версия docker-compose
+version: '3'
+
+# Перечень volume
+volumes:
+  pg_data:
+  static:
+  media:
+
+# Перечень контейнеров
+services:
+  # Имя и описание первого контейнера; имя выбирает разработчик. 
+  # Это контейнер БД
+  db:
+    # Из какого образа запустить контейнер:
+    image: postgres:14.5-alpine
+    # Файл (или список файлов) с переменными окружения
+    env_file: ./.env
+    # Какой volume подключить для этого контейнера
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    container_name: db
+
+  # Имя и описание контейнера с бэкендом
+  
+  web:
+    
+    # Из какого Dockerfile собирать образ для этого контейнера:
+    build: ./mafit/
+    env_file: .env
+    restart: always
+    volumes:
+      - static:/app/static/
+      - media:/app/media/
+    # Какие контейнеры нужно запустить до старта этого контейнера:
+    depends_on:
+      - db
+    container_name: web
+  
+  gateway:
+    # Сбилдить и запустить образ, 
+    # описанный в Dockerfile в папке gateway
+    build: ./gateway/
+    volumes:
+      #- static:/staticfiles/
+      - ./gateway/nginx.conf:/etc/nginx/conf.d/default.conf
+      # - static:/var/html/static/
+      # - media:/var/html/media/
+      - static:/app/static/
+      - media:/app/media/
+
+    # Ключ ports устанавливает
+    # перенаправление всех запросов с порта 8000 хоста
+    # на порт 80 контейнера.
+    ports:
+      - 8000:80 
+    depends_on:
+      - web
+    container_name: gateway
+
+
+  bot:
+    
+    # Из какого Dockerfile собирать образ для этого контейнера:
+    build: ./bot/
+    env_file: .env
+    restart: always
+    # Какие контейнеры нужно запустить до старта этого контейнера:
+    volumes:
+      
+      - media:/app/media/
+    links:
+      - db
+    container_name: bot
+  # Имя третьего контейнера. Это контейнер с фронтендом

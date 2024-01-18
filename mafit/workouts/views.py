@@ -1,46 +1,17 @@
 from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Hint, History, Exercise, Workout, HistoryExercise
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from .models import Hint, History, Exercise, Workout, HistoryExercise, Favorites
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View, TemplateView, RedirectView
 from .forms import  ExerciseForm, WorkoutForm, HistoryForm
 from django.urls import reverse_lazy
 from django.forms import inlineformset_factory
 from django.contrib.auth.mixins import LoginRequiredMixin
-# class BaseView():
-    
-#     def __init__(self, model, request):
-    
-#         self._model = model
-#         self.request = request # попробовать без 
-
-#     def get_list():
-        
-#         model = model
-#         list = model.objects.all()
-#         #page_obj = paginator(request, post_list)
-#         context = {'list': list}
-#         #return render(request, 'posts/index.html', context)
-
-#         pass
-#     def get_detail():
-#         pass
-#     def create():
-#         pass
-#     def update():
-#         pass
-#     def delete():
-#         pass
-
+from users.models import  User
 
 class HintsListView(ListView):
     model = Hint
     template_name = 'workouts/hint_list.html'
-
-
-# class HintsDetailView(DetailView):
-#     model = Hint
-#     template_name = 'workouts/hint.html'
 
 
 class WorkoutListView(ListView):
@@ -52,6 +23,17 @@ class WorkoutDetailView(DetailView):
     model = Workout
     template_name = 'workouts/workout.html'
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        workout = get_object_or_404(Workout, pk=self.kwargs['pk'])
+        if Favorites.objects.filter(workout_id=workout.id, user_id=self.request.user.id
+                                ).exists():
+            context['favorite'] = True
+         
+
+        return context
+
 
 class HistoryListView(ListView):
     model = HistoryExercise
@@ -61,19 +43,14 @@ class HistoryListView(ListView):
         return HistoryExercise.objects.filter(history__author=self.request.user).order_by('-history__date')
     
 
-# class HistoryDetailView(DetailView):
-#     model = History
-#     template_name = 'workouts/history.html'
-
-
 class ExerciseListView(ListView):
     model = Exercise
     template_name = 'workouts/exercise_list.html'
 
+
 class ExerciseDetailView(DetailView):
     model = Exercise
     template_name = 'workouts/exercise.html'
-
 
 
 class ExerciseCreateView(CreateView):
@@ -87,17 +64,16 @@ class ExerciseCreateView(CreateView):
         return super(ExerciseCreateView, self).form_valid(form)
 
 
-# class HistoryCreateView(CreateView):
-#     pass
-    # template_name = 'workouts/history_create.html'
-    # model = History
-    # form_class = HistoryForm
-    # success_url = reverse_lazy('workouts:history_list')
 
 from .forms import HistoryFormSet, EXFormSet
-def manage_hist(request):
-    
-    if request.method == "POST":
+
+
+
+
+class HistoryCreateView(CreateView):
+
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+
         form = HistoryForm (request.POST)
         #formset = HistoryFormSet(request.POST or None)
         if form.is_valid():
@@ -110,13 +86,69 @@ def manage_hist(request):
             
                 formset.save()
                 return redirect('workouts:history_list')
-             # Do something. Should generally end with a redirect. For example:
+            # Do something. Should generally end with a redirect. For example:
             #return HttpResponseRedirect(author.get_absolute_url())
         form = HistoryForm ()
         formset = HistoryFormSet()
-    form = HistoryForm ()
-    formset = HistoryFormSet(queryset=HistoryExercise.objects.none())
-    return render(request, 'workouts/history_create.html', {'form': form, 'formset': formset})
+        #form = HistoryForm ()
+        #formset = HistoryFormSet(queryset=HistoryExercise.objects.none())
+        return render(request, 'workouts/history_create.html', {'form': form, 'formset': formset})
+    
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        form = HistoryForm ()
+        formset = HistoryFormSet(queryset=HistoryExercise.objects.none())
+        return render(request, 'workouts/history_create.html', {'form': form, 'formset': formset})
+
+class HistoryListUpdateView(UpdateView):
+    def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        if request.method == 'POST':
+            formset = EXFormSet(request.POST or None)
+            if formset.is_valid():
+                formset.save()
+                return redirect('workouts:history_list')
+            formset = EXFormSet(queryset=HistoryExercise.objects.filter(history__author=request.user))
+        
+        return render(request, 'workouts/history_update.html', {'formset': formset})
+    
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        formset = EXFormSet(queryset=HistoryExercise.objects.filter(history__author=request.user))
+        return render(request, 'workouts/history_update.html', {'formset': formset})
+# def manage_hist(request):
+    
+#     if request.method == "POST":
+#         form = HistoryForm (request.POST)
+#         #formset = HistoryFormSet(request.POST or None)
+#         if form.is_valid():
+#             history = form.save(commit=False)
+#             history.author = request.user
+#             history = form.save()
+
+#             formset = HistoryFormSet(request.POST, instance=history)
+#             if formset.is_valid():
+            
+#                 formset.save()
+#                 return redirect('workouts:history_list')
+#              # Do something. Should generally end with a redirect. For example:
+#             #return HttpResponseRedirect(author.get_absolute_url())
+#         form = HistoryForm ()
+#         formset = HistoryFormSet()
+#     form = HistoryForm ()
+#     formset = HistoryFormSet(queryset=HistoryExercise.objects.none())
+#     return render(request, 'workouts/history_create.html', {'form': form, 'formset': formset})
+
+class HistoryDetailView(DetailView):
+    model = History
+    template_name = 'workouts/history_detail.html'
+
+class HistoryDetailUpdateView(UpdateView):
+    model = History
+    template_name = 'workouts/history_detail_update.html'
+    form_class = HistoryForm
+    
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('workouts:history_detail', kwargs={'pk': self.kwargs['pk']})
+
 
 
 def manage_edit_hist(request):
@@ -127,26 +159,9 @@ def manage_edit_hist(request):
             return redirect('workouts:history_list')
         formset = EXFormSet(queryset=HistoryExercise.objects.filter(history__author=request.user))
     else:
-        print('acho')
+        
         formset = EXFormSet(queryset=HistoryExercise.objects.filter(history__author=request.user))
     return render(request, 'workouts/history_update.html', {'formset': formset})
-
-# class HistoryUpdateView(UpdateView):
-#     template_name = 'workouts/history_create.html'
-#     model = History
-#     fields = ['date', 'exercises',]
-#     success_url = reverse_lazy('workouts:history_list')
-
-
-# class HistoryDeleteView(DeleteView):
-#     model = History
-#     template_name = 'workouts/delete.html'
-#     success_url = reverse_lazy('workouts:history_list')
-
-
-
-
-
 
 
 class WorkoutCreateView(CreateView):
@@ -160,14 +175,15 @@ class WorkoutCreateView(CreateView):
         return super(WorkoutCreateView, self).form_valid(form)
 
 
-
-
 class WorkoutUpdateView(UpdateView):
     template_name = 'workouts/workout_create.html'
     model = Workout
     #fields = ['name', 'exercises', 'tags']
     form_class = WorkoutForm
-    success_url = reverse_lazy('workouts:workout_list')
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('workouts:workout_detail', kwargs={'pk': self.kwargs['pk']})
+    #success_url = reverse_lazy('workouts:workout_list', kwargs={'pk': self.kwargs['pk']})
 
 
 class WorkoutDeleteView(DeleteView):
@@ -180,11 +196,66 @@ class ExerciseUpdateView(UpdateView):
     template_name = 'workouts/exercise_create.html'
     model = Exercise
     #fields = ['name', 'image', 'description', 'muscle']
-    success_url = reverse_lazy('workouts:exercise_list')
+    #success_url = reverse_lazy('workouts:exercise_list')
     form_class = ExerciseForm
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('workouts:exercise_detail', kwargs={'pk': self.kwargs['pk']})
 
 
 class ExerciseDeleteView(DeleteView):
     model = Exercise
     template_name = 'workouts/delete.html'
     success_url = reverse_lazy('workouts:exercise_list')
+
+
+# class ProfileDetailView(DetailView):
+#     model = User
+#     template_name = 'workouts/profile.html'
+#     #pk_url_kwarg = 'user'
+#     query_pk_and_slug = 'user'
+
+
+
+# class ProfileUpdateView(UpdateView):
+#     template_name = 'workouts/profile_edit.html'
+#     model = User
+#     #fields = ['name', 'image', 'description', 'muscle']
+#     #form_class = UserWeightForm
+
+#     def get_success_url(self):
+#         pk = self.kwargs['pk']
+#         return reverse_lazy('workouts:profile_detail', kwargs={'pk': pk})
+
+
+class FavoritesCreateView(TemplateView):
+    #template_name = 'workouts/follow.html'
+    model = Favorites
+    #extra_context = {'FAVORITES': True}
+    
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        pk = self.kwargs['pk']
+        workout = get_object_or_404(Workout, pk=pk)
+        pk = self.request.user.id
+        user = get_object_or_404(User, pk=pk)
+                
+        favorite = Favorites.objects.create(
+                workout_id=workout.id, user_id=user.id)
+        favorite.save()
+        
+        return redirect('workouts:workout_detail', self.kwargs['pk'])
+
+
+class FavoritesDeleteView(TemplateView):
+    model = Favorites
+    
+    #template_name = 'workouts/follow.html'
+    #success_url = reverse_lazy('workouts:workout_list')
+
+    def get(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
+        
+        unfollow = get_object_or_404(
+        Favorites,
+        workout_id=self.kwargs['pk'], user_id=self.request.user.id)
+        unfollow.delete()
+        return redirect('workouts:workout_detail', self.kwargs['pk'])

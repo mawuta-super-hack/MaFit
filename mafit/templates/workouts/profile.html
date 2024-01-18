@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load static%}
+<html lang="ru"> 
+  <head>  
+    {% block title %}
+      <title>Профиль</title>
+    {% endblock %}
+  </head>
+  <body>
+    <body>  
+      <main>
+          {% block content %}
+          <div class="container py-5">
+            
+            <div class="row">
+              <aside class="col-12 col-md-3"><h1> {{ object.first_name}} {{object.last_name}} </h1>
+                <ul class="list-group list-group-flush">
+                  {% if object.photo%}
+                  <li class="list-group-item">
+                    {% thumbnail object.photo "150x150" crop="center" upscale=True as im %}
+                    <img class="card-img my-2" src="{{ im.url }}">
+                    {% endthumbnail %}
+                  </li>
+                  {% else %}
+                  <li class="list-group-item">
+                    <p><img src="{% static 'img/profile.jpg' %}" width="150" height="150" class="d-inline-block align-top" alt=""
+                      align="middle" >
+                  </li> 
+                  {% endif %}
+
+                  {% comment %} {% if object.weight_set.weight_now %} {% endcomment %}
+                 
+                    
+                    
+                    {% if object.weight_now %}
+                    <li class="list-group-item">
+                      Текущий вес: {{ object.weight_now }}  кг.</li>
+                    {% else %}
+                    <li class="list-group-item">
+                      Текущий вес не указан.</li>
+                      {% endif %}
+                    
+
+                    
+                    {% if object.weight_purpose %}
+                    <li class="list-group-item">
+                      Желаемый вес: {{ object.weight_purpose}}  кг.</li>
+                    {% else %}
+                    <li class="list-group-item">
+                      Желаемый вес не указан.</li>
+                      {% endif %}
+                    
+
+                  {% comment %} {% else %}   {% endcomment %}
+                  {% comment %} <li class="list-group-item">
+                    Текущий вес не указан. {% endcomment %}
+                  {% comment %} </li>{% endif %} {% endcomment %}
+                  
+                  {% comment %} {% if object.weight.purpose %}
+                  <li class="list-group-item">
+                    Желаемый вес: {{ object.weight.purpose}}  кг.</li>
+                    {% else %}  
+                    <li class="list-group-item">
+                      Желаемый вес не указан.</li>
+                  {% endif %} {% endcomment %}
+                  
+                  {% if object.id == user.id  %}
+                  <li class="list-group-item">
+                    <a class="btn btn-outline-secondary d-inline-flex align-items-center"
+                    href="{% url "users:profile_update" object.id %}" role="button">
+                      редактировать
+                    </a>
+                  
+                  </li>
+                  {% endif %}
+                </aside >
+                 
+                    <article class="col-12 col-md-9">
+                      <ul class="list-group list-group-flush">
+                    <h1> Избранные тренировки</h1>
+              {% if object.favorite.all|length != 0 %}
+          
+         
+                {% for favorite in object.favorite.all %}
+                <li class="list-group-item">
+                  <a href= "{% url "workouts:workout_detail" favorite.workout_id %}"class="nav-link  link-body-emphasis"> {{ favorite.workout.name}}</a>
+                </li>    
+                  {% endfor%} 
+              {% else %}
+              Сейчас у Вас нет избранных тренировок. Нужно это исправить!
+              {% endif%} 
+        {% endblock %}
+      </body>
+    </html>
+
+
+

@@ -23,16 +23,16 @@
             {% for object in object_list %}
               <ul>
                 <li>
-                <a href= "{% url "workouts:workout_detail" object.id %}"> {{object.name}}</a> 
+                <a href= "{% url "workouts:workout_detail" object.id %}"class="nav-link  link-body-emphasis"> {{object.name}}:</a> 
                 </li>
-               Упражнения: 
+               
                   {% for exercise in object.exercises.all%}
-                    {{ exercise }}
+                  <span style="color:gray">{{ exercise.name }} </span>
                   {% endfor%}
                 
                    <br>
                   {% for tag in object.tags.all%}
-                  <span style="color:gray">{{ tag }} </span>   
+                  <span class="badge text-bg-secondary rounded-pill">{{ tag.name }}</span>
                   {% endfor%}
                 
 

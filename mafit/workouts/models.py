@@ -12,7 +12,7 @@ class BaseModelForApp(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.name[:20]
+        return self.name[:50]
 
 
 class Muscle(BaseModelForApp):
@@ -63,7 +63,7 @@ class Exercise(models.Model):
         default_related_name = 'exercises'
 
     def __str__(self):
-        return self.name[:20]
+        return self.name[:50]
 
 
 class Workout(models.Model):
@@ -73,6 +73,7 @@ class Workout(models.Model):
     tags = models.ManyToManyField(Tag, related_name='tags', help_text='Теги')
     author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1, related_name='workout', help_text='Автор записи')
     date = models.DateTimeField(auto_now_add=True)
+    
 
     class Meta:
         ordering = ('-date',)
@@ -81,7 +82,7 @@ class Workout(models.Model):
         default_related_name = 'exercises'
 
     def __str__(self):
-        return self.name[:20]
+        return self.name[:50]
 
 
 class History(models.Model):
@@ -92,7 +93,7 @@ class History(models.Model):
     #exercise = models.ManyToManyField(Exercise, help_text='Упражнение', through='HistoryExercise')
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=1, help_text='Автор записи', related_name='history')
     workout = models.ForeignKey(Workout, on_delete=models.SET_NULL, null=True, help_text='Связанная тренировка')
-    
+    comment = models.TextField(help_text='Комментарий к тренировке', null=True, blank=True)
     date = models.DateField(help_text='Дата тренировки', default=DEFAULT_DATE)
 
     class Meta:
@@ -121,4 +122,21 @@ class HistoryExercise(models.Model):
         default_related_name = 'history_exercise'
 
     def __str__(self):
-        return ''
+        return f'exercise - {self.exercises}:{self.history}'
+    
+
+class Favorites(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='favorite',
+        verbose_name='Пользователь')
+    workout = models.ForeignKey(
+        Workout,
+        on_delete=models.CASCADE,
+        related_name='favorites',
+        verbose_name='Тренировка')
+
+    class Meta:
+        verbose_name_plural = "Избранные"
+        constraints = (models.UniqueConstraint(fields=['user', 'workout'], name='unique_combination'),)

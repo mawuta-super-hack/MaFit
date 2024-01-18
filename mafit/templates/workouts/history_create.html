@@ -25,7 +25,10 @@
                     </small>{{ form.date}} 
                     <small id="id_workout-help" class="form-text text-muted">
                       {{ form.workout.help_text }}
-                    </small>{{ form.workout}} 
+                    </small>{{ form.workout}} <br>
+                    <small id="id_workout-help" class="form-text text-muted"> <br>
+                      {{ form.comment.help_text }}
+                    </small>{{ form.comment}} 
         
         {{ formset.management_form }}
         {{ formset.non_form_errors }}
@@ -92,7 +95,7 @@
             {% endif %}
         </ul>
     {% endfor %}
-        </table> {% endcomment %}
+        </table> {% endcomment %} <br>
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-lg btn-light">
 

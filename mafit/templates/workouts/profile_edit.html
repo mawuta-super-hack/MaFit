@@ -1,0 +1,71 @@
+
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% load static%}
+<html lang="ru"> 
+  <head>  
+    {% block title %}
+      <title>Профиль</title>
+    {% endblock %}
+  </head>
+  <body>
+    <body>  
+      <main>
+          {% block content %}
+          <div class="container py-5">
+            <div class="row justify-content-center">
+              <div class="col-md-8 p-5">
+                <div class="card">
+                  <div class="card-header">       
+                    <h1> {{ object.user.first_name}} {{object.user.last_name}} </h1>        
+                  </div>
+                  
+                    <form method="post" enctype="multipart/form-data">
+                      {% csrf_token %}
+                      
+                      <div class="form-group row my-3 p-3">
+                        
+                        {{form.photo }}  
+                        <small id="id_photo-help" class="form-text text-muted">
+                          {{ form.photo.help_text }}
+                        </small>
+                      </div>
+    
+                      <div class="form-group row my-3 p-3">
+                        
+                        {{ form.weight_now}}  
+                        <small id="id_weight_now-help" class="form-text text-muted">
+                          {{ form.weight_now.help_text }}
+                        </small>
+                      </div>
+    
+                      <div class="form-group row my-3 p-3">
+                        
+                        {{ form.weight_purpose }}  
+                        <small id="id-help" class="form-text text-muted">
+                          {{ form.weight_purpose.help_text }}
+                        </small>
+                      </div>
+    
+    
+                      <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-lg btn-light">
+          
+                            Сохранить 
+            
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+        {% endblock %}
+      </body>
+    </html>
+
+
+

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Muscle, Tag, Hint, Workout, Exercise, History, HistoryExercise
+from .models import Muscle, Tag, Hint, Workout, Exercise, History, HistoryExercise, Favorites
 
 
 class BaseAdmin(admin.ModelAdmin):
@@ -66,8 +66,16 @@ class HistoryAdmin(admin.ModelAdmin):
     empty_value_display = '-не указано-'
     #inlines = [Historyline]
 
+class FavoritesAdmin(admin.ModelAdmin):
+
+    fields = [('user','workout')]
+    list_display = ('user','workout')
+    
+
+
 admin.site.register([Muscle, Tag, Hint], BaseAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Workout, WorkoutAdmin)
 admin.site.register(History, HistoryAdmin)
 admin.site.register(HistoryExercise, HistoryExerciseAdmin)
+admin.site.register(Favorites, FavoritesAdmin)

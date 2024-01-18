@@ -21,12 +21,14 @@
             {% for object in object_list %}
               <ul>
                 <li>
-                 <a href= "{% url "workouts:exercise_detail" object.id %}"> {{object.name}}</a> 
+                 <a href= "{% url "workouts:exercise_detail" object.id %}" class="nav-link link-body-emphasis"> {{object.name}}</a> 
                 </li>
               
                 
                   {% for muscle in object.muscle.all%}
-                  <span style="color:gray">{{ muscle }}</span> 
+                  <span class="badge text-bg-secondary rounded-pill">{{ muscle.name }}</span>
+                  {% comment %} <span class="badge text-bg-warning rounded-pill"></span>
+                  <span class="badge bg-secondary-subtle border border-secondary-subtle text-secondary-emphasis rounded-pill"></span> {% endcomment %}
                   {% endfor%}
                 
               </ul>

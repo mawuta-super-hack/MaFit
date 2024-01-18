@@ -1,5 +1,6 @@
 from django import forms
-from .models import History, Exercise, Workout, HistoryExercise, Muscle, Tag, User
+from .models import History, Exercise, Workout, HistoryExercise, Muscle, Tag
+
 from django.forms import inlineformset_factory, formset_factory, modelformset_factory
 
 
@@ -34,9 +35,13 @@ class WorkoutForm(forms.ModelForm):
 
 
 class HistoryForm(forms.ModelForm):
+    comment= forms.CharField(widget=forms.Textarea(attrs={"rows":2, "cols":100}), help_text='Комментарий')
+
     class Meta:
         model = History
-        fields = ('date', 'workout')
+        fields = ('date', 'workout', 'comment')
+
+
 
 
 class HistoryExerciseForm(forms.ModelForm):
@@ -49,3 +54,12 @@ class HistoryExerciseForm(forms.ModelForm):
 HistoryFormSet = inlineformset_factory(History, HistoryExercise, form=HistoryExerciseForm, extra=6, fk_name='history')
 
 EXFormSet = modelformset_factory(HistoryExercise, form=HistoryExerciseForm, extra=0, can_delete=True)
+
+# class UserWeightForm(forms.ModelForm):
+#     photo  = forms.ModelForm()
+#     weight_now
+#     purpose
+
+#     class Meta:
+#         model = UserWeight
+#         fields=('photo', 'weight_now', 'purpose')

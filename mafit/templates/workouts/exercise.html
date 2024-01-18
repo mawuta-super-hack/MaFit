@@ -18,7 +18,7 @@
             </li>
             <li class="list-group-item">
               {% for muscle in object.muscle.all%}
-                {{ muscle }}
+              <span class="badge text-bg-secondary rounded-pill">{{ muscle.name }}</span> <br>
               {% endfor%}
             </li>
 

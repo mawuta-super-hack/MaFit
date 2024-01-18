@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, UserWeight
+from .models import User
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -10,13 +10,12 @@ class UserAdmin(admin.ModelAdmin):
     empty_value_display = '-не указано-'
 
 
-class UserWeightAdmin(admin.ModelAdmin):
+# class UserWeightAdmin(admin.ModelAdmin): 
 
-    list_display = ('id', 'user', 'date')
-    # search_fields = ('name', 'muscle')
-    list_filter = ('date',)
-    empty_value_display = '-не указано-'
+#     list_display = ( 'user',)
+#     # search_fields = ('name', 'muscle')
+#     empty_value_display = '-не указано-'
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(UserWeight, UserWeightAdmin)
+# admin.site.register(UserWeight, UserWeightAdmin)

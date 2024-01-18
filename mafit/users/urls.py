@@ -5,12 +5,16 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordResetConfirmView,
                                        PasswordResetDoneView,
                                        PasswordResetView)
+from .views import ProfileDetailView, ProfileUpdateView
 from django.urls import path
 from . import views
 
 app_name = 'users'
 
 urlpatterns = [
+    path('profile/<int:pk>/', ProfileDetailView.as_view(), name='profile_detail'),
+    path('profile/<int:pk>/update', ProfileUpdateView.as_view(), name='profile_update'),
+
     path(
         'logout/',
         LogoutView.as_view(template_name='users/logget_out.html'),

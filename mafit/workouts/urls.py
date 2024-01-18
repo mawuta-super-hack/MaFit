@@ -7,20 +7,27 @@ from .views import (
     ExerciseCreateView, 
     WorkoutCreateView, WorkoutDeleteView, 
     WorkoutUpdateView, ExerciseDeleteView, 
-    ExerciseUpdateView, manage_hist, manage_edit_hist
+    ExerciseUpdateView, HistoryCreateView,HistoryDetailView, HistoryDetailUpdateView, HistoryListUpdateView, FavoritesCreateView, FavoritesDeleteView
 ) 
 app_name = 'workouts'
 
 urlpatterns = [
+    
+    
+    path('workout/<int:pk>/follow/',FavoritesCreateView.as_view(), name='workout_follow', ),
+    path('workout/<int:pk>/unfollow/', FavoritesDeleteView.as_view(), name='workout_unfollow'),
+
     path('workout/<int:pk>/edit', WorkoutUpdateView.as_view(), name='workout_update'),
     path('workout/<int:pk>/delete', WorkoutDeleteView.as_view(), name='workout_delete'),
     path('workout/<int:pk>', WorkoutDetailView.as_view(), name='workout_detail'),
     path('workout/create/', WorkoutCreateView.as_view(), name='workout_create'),
     path('workout/', WorkoutListView.as_view(), name='workout_list'),
 
-    path('history/edit/', manage_edit_hist, name='history_update'),
+    path('history/<int:pk>/edit', HistoryDetailUpdateView.as_view(), name='history_detail_update'),
+    path('history/<int:pk>/', HistoryDetailView.as_view(), name='history_detail'),
+    path('history/edit/', HistoryListUpdateView.as_view(), name='history_update'),
  #   path('history/<int:pk>/delete', HistoryDeleteView.as_view(), name='history_delete'),
-    path('history/create/', manage_hist, name='history_create'),
+    path('history/create/', HistoryCreateView.as_view(), name='history_create'),
     path('history/', HistoryListView.as_view(), name='history_list'),
     
     path('exercise/<int:pk>/edit', ExerciseUpdateView.as_view(), name='exercise_update'),
@@ -30,5 +37,5 @@ urlpatterns = [
     path('exercise/', ExerciseListView.as_view(), name='exercise_list'),
 
     # path('hint/<int:pk>/', HintsDetailView.as_view(), name='hint_detail'),
-    path('hint/', HintsListView.as_view(), name='index'),
+    path('', HintsListView.as_view(), name='index'),
 ]
