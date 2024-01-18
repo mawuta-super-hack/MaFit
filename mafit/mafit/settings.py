@@ -8,9 +8,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ['mafitness.sytes.net', '51.250.27.243']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,24 +56,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mafit.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR / 'db.sqlite3'),
-    }
-}
-
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
-#         'NAME': os.getenv('DB_NAME', 'postgres'),
-#         'USER': os.getenv('POSTGRES_USER', 'postgres'),
-#         'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
-#         'HOST': os.getenv('DB_HOST', 'localhost'),
-#         'PORT': os.getenv('DB_PORT', '5432')
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR / 'db.sqlite3'),
 #     }
-# } 
+# }
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', 'postgres'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '5432')
+    }
+} 
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -115,5 +115,7 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'workouts:index'
 
 #CSRF_TRUSTED_ORIGINS = ['*']
-CSRF_TRUSTED_ORIGINS = [ "http://localhost:8000",
-    "http://127.0.0.1:8000",]
+CSRF_TRUSTED_ORIGINS = ["http://mafitness.sytes.net", "http://51.250.27.243"]
+    # mafitness.sytes.net
+    # "http://localhost:8000",
+    # "http://127.0.0.1:8000",]

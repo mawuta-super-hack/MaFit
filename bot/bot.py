@@ -102,7 +102,7 @@ def on_click(call):
         bot.register_next_step_handler(call, muscle_filter)
 
     elif call.text == 'Перейти на сайт':
-        webbrowser.open('http://127.0.0.1:8000/')
+        webbrowser.open('http://mafitness.sytes.net/')
 
 
 @bot.message_handler(commands=['start'])
