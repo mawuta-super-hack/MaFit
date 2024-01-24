@@ -1,12 +1,16 @@
-import telebot
-from telebot import types
-from func import filter_keyboard, template_hint, connect_db, get_query, start_keyboard
-from query import QUERY_HINTS, QUERY_FILTER_MUSCLE, QUERY_FILTER_TAGS, QUERY_FILTER_WORKOUTS, QUERY_FILTER_EXERCISE, QUERY_RESULT_WORKOUTS, QUERY_RESULT_EXERCISE
-import webbrowser 
-from dotenv import load_dotenv
 import os
 import pathlib
+import webbrowser
 from pathlib import Path
+
+import telebot
+from dotenv import load_dotenv
+from func import (connect_db, filter_keyboard, get_query, start_keyboard,
+                  template_hint)
+from query import (QUERY_FILTER_EXERCISE, QUERY_FILTER_MUSCLE,
+                   QUERY_FILTER_TAGS, QUERY_FILTER_WORKOUTS, QUERY_HINTS,
+                   QUERY_RESULT_EXERCISE, QUERY_RESULT_WORKOUTS)
+from telebot import types
 
 load_dotenv()
 
@@ -102,7 +106,7 @@ def on_click(call):
         bot.register_next_step_handler(call, muscle_filter)
 
     elif call.text == 'Перейти на сайт':
-        webbrowser.open('http://mafitness.sytes.net/')
+        webbrowser.open('http://51.250.27.243:8000/')
 
 
 @bot.message_handler(commands=['start'])

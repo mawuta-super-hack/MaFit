@@ -1,5 +1,6 @@
-from pathlib import Path
 import os
+from pathlib import Path
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,7 +11,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['mafitness.sytes.net', '51.250.27.243']
+ALLOWED_HOSTS = ['mafitness.sytes.net', '51.250.27.243', '127.0.0.1']
+#ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -115,7 +117,7 @@ LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'workouts:index'
 
 #CSRF_TRUSTED_ORIGINS = ['*']
-CSRF_TRUSTED_ORIGINS = ["http://mafitness.sytes.net", "http://51.250.27.243"]
+CSRF_TRUSTED_ORIGINS = ["http://mafitness.sytes.net:8000", "http://51.250.27.243:8000", "http://127.0.0.1:8000"]
     # mafitness.sytes.net
     # "http://localhost:8000",
     # "http://127.0.0.1:8000",]

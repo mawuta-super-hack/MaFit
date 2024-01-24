@@ -1,14 +1,13 @@
 from django.urls import path
-from .views import ( 
-     HintsListView, 
-    ExerciseDetailView, 
-    WorkoutDetailView,  ExerciseListView,  
-    HistoryListView, WorkoutListView, 
-    ExerciseCreateView, 
-    WorkoutCreateView, WorkoutDeleteView, 
-    WorkoutUpdateView, ExerciseDeleteView, 
-    ExerciseUpdateView, HistoryCreateView,HistoryDetailView, HistoryDetailUpdateView, HistoryListUpdateView, FavoritesCreateView, FavoritesDeleteView
-) 
+
+from .views import (ExerciseCreateView, ExerciseDeleteView, ExerciseDetailView,
+                    ExerciseListView, ExerciseUpdateView, FavoritesCreateView,
+                    FavoritesDeleteView, HintsListView, HistoryCreateView,
+                    HistoryDetailUpdateView, HistoryDetailView,
+                    HistoryListUpdateView, HistoryListView, WorkoutCreateView,
+                    WorkoutDeleteView, WorkoutDetailView, WorkoutListView,
+                    WorkoutUpdateView)
+
 app_name = 'workouts'
 
 urlpatterns = [

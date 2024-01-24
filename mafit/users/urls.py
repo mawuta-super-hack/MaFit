@@ -5,9 +5,10 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordResetConfirmView,
                                        PasswordResetDoneView,
                                        PasswordResetView)
-from .views import ProfileDetailView, ProfileUpdateView
 from django.urls import path
+
 from . import views
+from .views import ProfileDetailView, ProfileUpdateView
 
 app_name = 'users'
 

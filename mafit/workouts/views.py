@@ -1,13 +1,18 @@
 from typing import Any
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.forms import inlineformset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Hint, History, Exercise, Workout, HistoryExercise, Favorites
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View, TemplateView, RedirectView
-from .forms import  ExerciseForm, WorkoutForm, HistoryForm
 from django.urls import reverse_lazy
-from django.forms import inlineformset_factory
-from django.contrib.auth.mixins import LoginRequiredMixin
-from users.models import  User
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  RedirectView, TemplateView, UpdateView, View)
+from users.models import User
+
+from .forms import ExerciseForm, HistoryForm, WorkoutForm
+from .models import (Exercise, Favorites, Hint, History, HistoryExercise,
+                     Workout)
+
 
 class HintsListView(ListView):
     model = Hint
@@ -65,9 +70,7 @@ class ExerciseCreateView(CreateView):
 
 
 
-from .forms import HistoryFormSet, EXFormSet
-
-
+from .forms import EXFormSet, HistoryFormSet
 
 
 class HistoryCreateView(CreateView):

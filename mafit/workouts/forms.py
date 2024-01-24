@@ -1,7 +1,8 @@
 from django import forms
-from .models import History, Exercise, Workout, HistoryExercise, Muscle, Tag
+from django.forms import (formset_factory, inlineformset_factory,
+                          modelformset_factory)
 
-from django.forms import inlineformset_factory, formset_factory, modelformset_factory
+from .models import Exercise, History, HistoryExercise, Muscle, Tag, Workout
 
 
 class ExerciseForm(forms.ModelForm):

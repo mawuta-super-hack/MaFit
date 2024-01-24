@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Muscle, Tag, Hint, Workout, Exercise, History, HistoryExercise, Favorites
+
+from .models import (Exercise, Favorites, Hint, History, HistoryExercise,
+                     Muscle, Tag, Workout)
 
 
 class BaseAdmin(admin.ModelAdmin):

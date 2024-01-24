@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, CreateView, UpdateView
-from .forms import CreateForm
+from django.views.generic import CreateView, DetailView, UpdateView
+
+from .forms import CreateForm, UserWeightForm
 from .models import User
-from .forms import UserWeightForm
 
 
 class SignUp(CreateView):
