@@ -8,7 +8,10 @@ class CreateForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'weight_now', 'weight_purpose', 'photo')
+        fields = (
+            'first_name', 'last_name', 'username', 'email',
+            'weight_now', 'weight_purpose', 'photo'
+        )
         labels = {
             'weight_now': 'Текущий вес',
             'weight_purpose': 'Желаемый вес',
@@ -21,4 +24,3 @@ class UserWeightForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('weight_now', 'weight_purpose', 'photo')
-

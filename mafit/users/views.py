@@ -14,16 +14,11 @@ class SignUp(CreateView):
 class ProfileDetailView(DetailView):
     model = User
     template_name = 'workouts/profile.html'
-    #pk_url_kwarg = 'user'
-    #query_pk_and_slug = 'user'
-    
-
 
 
 class ProfileUpdateView(UpdateView):
     template_name = 'workouts/profile_edit.html'
     model = User
-    #fields = ['name', 'image', 'description', 'muscle']
     form_class = UserWeightForm
 
     def get_success_url(self):

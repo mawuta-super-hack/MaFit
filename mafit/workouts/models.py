@@ -4,6 +4,7 @@ from users.models import User
 
 DEFAULT_DATE = timezone.now()
 
+
 class BaseModelForApp(models.Model):
     """Abstract model for Tag and Muscle."""
     name = models.CharField(max_length=200)
@@ -52,8 +53,13 @@ class Exercise(models.Model):
         upload_to='media/'
     )
     description = models.TextField(help_text='Описание техники выполнения')
-    muscle = models.ManyToManyField(Muscle, related_name='exercise', help_text='Какие мышцы задействованы')
-    author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1, related_name='exercise', help_text='Автор записи')
+    muscle = models.ManyToManyField(
+        Muscle, related_name='exercise', help_text='Какие мышцы задействованы'
+    )
+    author = models.ForeignKey(
+        User, on_delete=models.SET_DEFAULT, default=1,
+        related_name='exercise', help_text='Автор записи'
+    )
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -68,12 +74,18 @@ class Exercise(models.Model):
 
 class Workout(models.Model):
     """Description of the workouts in the db."""
-    name = models.CharField(verbose_name='Название', max_length=200, help_text='Название тренировки')
-    exercises = models.ManyToManyField(Exercise, related_name='exercises', help_text='Упражнения')
+    name = models.CharField(
+        verbose_name='Название', max_length=200,
+        help_text='Название тренировки'
+    )
+    exercises = models.ManyToManyField(
+        Exercise, related_name='exercises', help_text='Упражнения')
     tags = models.ManyToManyField(Tag, related_name='tags', help_text='Теги')
-    author = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default=1, related_name='workout', help_text='Автор записи')
+    author = models.ForeignKey(
+        User, on_delete=models.SET_DEFAULT, default=1,
+        related_name='workout', help_text='Автор записи'
+    )
     date = models.DateTimeField(auto_now_add=True)
-    
 
     class Meta:
         ordering = ('-date',)
@@ -87,13 +99,17 @@ class Workout(models.Model):
 
 class History(models.Model):
     """Description of the history of trainings in the db."""
-    #sets = models.PositiveSmallIntegerField(help_text='Количество подходов')
-    #reps = models.PositiveSmallIntegerField(help_text='Количество повторений')
-    #weight = models.FloatField(help_text='Вес')
-    #exercise = models.ManyToManyField(Exercise, help_text='Упражнение', through='HistoryExercise')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, default=1, help_text='Автор записи', related_name='history')
-    workout = models.ForeignKey(Workout, on_delete=models.SET_NULL, null=True, help_text='Связанная тренировка')
-    comment = models.TextField(help_text='Комментарий к тренировке', null=True, blank=True)
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, default=1,
+        help_text='Автор записи', related_name='history'
+    )
+    workout = models.ForeignKey(
+        Workout, on_delete=models.SET_NULL, null=True,
+        help_text='Связанная тренировка'
+    )
+    comment = models.TextField(
+        help_text='Комментарий к тренировке', null=True, blank=True
+    )
     date = models.DateField(help_text='Дата тренировки', default=DEFAULT_DATE)
 
     class Meta:
@@ -103,18 +119,24 @@ class History(models.Model):
 
     def __str__(self):
         return f'{self.workout} {self.author}'
-    
+
 
 class HistoryExercise(models.Model):
-    """."""
-    sets = models.PositiveSmallIntegerField(help_text='Количество подходов', default=0)
-    reps = models.PositiveSmallIntegerField(help_text='Количество повторений', default=0)
+    """Description of the history of one exercise in the db."""
+    sets = models.PositiveSmallIntegerField(
+        help_text='Количество подходов', default=0
+    )
+    reps = models.PositiveSmallIntegerField(
+        help_text='Количество повторений', default=0
+    )
     weight = models.FloatField(help_text='Вес', default=0)
-    exercises = models.ForeignKey(Exercise, on_delete=models.CASCADE, related_name='HistoryExercise', help_text='Упражнения')
-    #date = models.DateField(help_text='Дата тренировки', default=date.today())
-    history = models.ForeignKey(History, on_delete=models.CASCADE, related_name='historyexercise')
-    #workout = models.ForeignKey(Workout, on_delete=models.SET_NULL, null=True, help_text='Связанная тренировка')
-    #history = models.ForeignKey(History, on_delete=models.SET_NULL, null=True, help_text='История',related_name='HistoryExercise')
+    exercises = models.ForeignKey(
+        Exercise, on_delete=models.CASCADE,
+        related_name='HistoryExercise', help_text='Упражнения'
+    )
+    history = models.ForeignKey(
+        History, on_delete=models.CASCADE, related_name='historyexercise'
+    )
 
     class Meta:
         verbose_name = 'История упражнения'
@@ -123,9 +145,10 @@ class HistoryExercise(models.Model):
 
     def __str__(self):
         return f'exercise - {self.exercises}:{self.history}'
-    
+
 
 class Favorites(models.Model):
+    """Description of the favorites workouts in the db."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -139,4 +162,6 @@ class Favorites(models.Model):
 
     class Meta:
         verbose_name_plural = "Избранные"
-        constraints = (models.UniqueConstraint(fields=['user', 'workout'], name='unique_combination'),)
+        constraints = (models.UniqueConstraint(
+            fields=['user', 'workout'], name='unique_combination'
+        ),)

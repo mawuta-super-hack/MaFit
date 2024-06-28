@@ -9,18 +9,21 @@ class BaseAdmin(admin.ModelAdmin):
 
 
 class WorkoutTagline(admin.TabularInline):
+
     model = Workout.tags.through
     min_num = 1
     extra = 0
 
 
 class WorkoutExerciseline(admin.TabularInline):
+
     model = Workout.exercises.through
     min_num = 1
     extra = 0
 
 
 class ExerciseMuscleline(admin.TabularInline):
+
     model = Exercise.muscle.through
     min_num = 1
     extra = 0
@@ -45,15 +48,11 @@ class WorkoutAdmin(admin.ModelAdmin):
     inlines = [WorkoutExerciseline, WorkoutTagline]
     exclude = ['tags', 'exercises']
 
-# class Historyline(admin.TabularInline):
-#     model = HistoryExercise.history.through
-#     min_num = 1
-#     extra = 0
 
 class HistoryExerciseAdmin(admin.ModelAdmin):
 
     fields = ['exercises', ('sets', 'reps', 'weight'), 'history']
-    list_display = ('id','exercises')
+    list_display = ('id', 'exercises')
     search_fields = ('id', 'exercises')
     list_filter = ('exercises',)
     empty_value_display = '-не указано-'
@@ -62,17 +61,16 @@ class HistoryExerciseAdmin(admin.ModelAdmin):
 class HistoryAdmin(admin.ModelAdmin):
 
     fields = ['workout', 'author', 'date']
-    list_display = ('id','date', 'workout', 'author')
-    search_fields = ('id','date', 'workout', 'author')
-    list_filter = ('id','date', 'workout', 'author')
+    list_display = ('id', 'date', 'workout', 'author')
+    search_fields = ('id', 'date', 'workout', 'author')
+    list_filter = ('id', 'date', 'workout', 'author')
     empty_value_display = '-не указано-'
-    #inlines = [Historyline]
+
 
 class FavoritesAdmin(admin.ModelAdmin):
 
-    fields = [('user','workout')]
-    list_display = ('user','workout')
-    
+    fields = [('user', 'workout')]
+    list_display = ('user', 'workout')
 
 
 admin.site.register([Muscle, Tag, Hint], BaseAdmin)

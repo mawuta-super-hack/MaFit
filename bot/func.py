@@ -6,11 +6,13 @@ from telebot import types
 
 load_dotenv()
 
+
 def filter_keyboard(buttons):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     for el in buttons:
         markup.add(el[0])
     return markup
+
 
 def start_keyboard():
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -23,35 +25,36 @@ def start_keyboard():
     markup.row(btn4)
     return markup
 
+
 def template_hint(hints):
     text = ''
     for el in hints:
         text += f'{el[1]}. {el[2]}\n\n'
     return text
 
+
 def connect_db(query):
-    #'postgresql://user:password@host:port/database_name'
-    #try:
+    try:
         connection = psycopg2.connect(
-            #db = os.getenv('DB_ENGINE'),
-            dbname = 'postgres',
-            user =  os.getenv('POSTGRES_USER'),
-            password = os.getenv('POSTGRES_PASSWORD'),
-            host = os.getenv('DB_HOST'),
-            port = os.getenv('DB_PORT')
+            dbname='postgres',
+            user=os.getenv('POSTGRES_USER'),
+            password=os.getenv('POSTGRES_PASSWORD'),
+            host=os.getenv('DB_HOST'),
+            port=os.getenv('DB_PORT')
         )
         cursor = connection.cursor()
 
         cursor.execute(query)
         data = cursor.fetchall()
 
-    # except (Exception):
-    #     print("Ошибка при работе с PostgreSQL")
-    # finally:
+    except (Exception):
+        print("Ошибка при работе с PostgreSQL")
+    finally:
         if connection:
             cursor.close()
             connection.close()
             return data
+
 
 def get_query(query, value):
     return query.replace('CALL', value)

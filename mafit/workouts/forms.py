@@ -1,6 +1,5 @@
 from django import forms
-from django.forms import (formset_factory, inlineformset_factory,
-                          modelformset_factory)
+from django.forms import inlineformset_factory, modelformset_factory
 
 from .models import Exercise, History, HistoryExercise, Muscle, Tag, Workout
 
@@ -18,7 +17,6 @@ class ExerciseForm(forms.ModelForm):
 
 
 class WorkoutForm(forms.ModelForm):
-    #exercises = forms.MultipleChoiceField(queryset=Exercise.objects.all(),  widget=forms.CheckboxSelectMultiple)
 
     class Meta:
         model = Workout
@@ -36,31 +34,29 @@ class WorkoutForm(forms.ModelForm):
 
 
 class HistoryForm(forms.ModelForm):
-    comment= forms.CharField(widget=forms.Textarea(attrs={"rows":2, "cols":100}), help_text='Комментарий')
+
+    comment = forms.CharField(
+        widget=forms.Textarea(
+            attrs={"rows": 2, "cols": 100}), help_text='Комментарий')
 
     class Meta:
         model = History
         fields = ('date', 'workout', 'comment')
 
 
-
-
 class HistoryExerciseForm(forms.ModelForm):
+
     class Meta:
         model = HistoryExercise
-        fields=('sets', 'reps', 'weight', 'exercises')
+        fields = ('sets', 'reps', 'weight', 'exercises')
 
 
-#HistoryFormSet = modelformset_factory(HistoryExercise, form=HistoryExerciseForm, extra=6)
-HistoryFormSet = inlineformset_factory(History, HistoryExercise, form=HistoryExerciseForm, extra=6, fk_name='history')
+HistoryFormSet = inlineformset_factory(
+    History, HistoryExercise,
+    form=HistoryExerciseForm, extra=6, fk_name='history'
+)
 
-EXFormSet = modelformset_factory(HistoryExercise, form=HistoryExerciseForm, extra=0, can_delete=True)
-
-# class UserWeightForm(forms.ModelForm):
-#     photo  = forms.ModelForm()
-#     weight_now
-#     purpose
-
-#     class Meta:
-#         model = UserWeight
-#         fields=('photo', 'weight_now', 'purpose')
+EXFormSet = modelformset_factory(
+    HistoryExercise,
+    form=HistoryExerciseForm, extra=0, can_delete=True
+)

@@ -28,10 +28,6 @@
                       align="middle" >
                   </li> 
                   {% endif %}
-
-                  {% comment %} {% if object.weight_set.weight_now %} {% endcomment %}
-                 
-                    
                     
                     {% if object.weight_now %}
                     <li class="list-group-item">
@@ -51,19 +47,6 @@
                       Желаемый вес не указан.</li>
                       {% endif %}
                     
-
-                  {% comment %} {% else %}   {% endcomment %}
-                  {% comment %} <li class="list-group-item">
-                    Текущий вес не указан. {% endcomment %}
-                  {% comment %} </li>{% endif %} {% endcomment %}
-                  
-                  {% comment %} {% if object.weight.purpose %}
-                  <li class="list-group-item">
-                    Желаемый вес: {{ object.weight.purpose}}  кг.</li>
-                    {% else %}  
-                    <li class="list-group-item">
-                      Желаемый вес не указан.</li>
-                  {% endif %} {% endcomment %}
                   
                   {% if object.id == user.id  %}
                   <li class="list-group-item">

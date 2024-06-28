@@ -36,59 +36,10 @@
               <div class="ml-4">{{ form.DELETE }} {{ form.DELETE.label }}</div>
           {% endif %}
       </div>
-
-          {% comment %} <div class="wrcf-wrap">
-
-            <div class="one-fourth">
-              {{ form.exercises }}   
-            <small id="id_exercises-help" class="form-text text-muted">
-              {{ form.exercises.help_text }}
-            </div>
-            
-            <div class="one-fourth">
-
-              {{ form.sets }}  
-              <small id="id_sets-help" class="form-text text-muted">
-                {{ form.sets.help_text }}
-              </small>
-            </div>
-            <div class="one-fourth">
-              {{ form.reps }}  
-            <small id="id_reps-help" class="form-text text-muted">
-              {{ form.reps.help_text }}
-            </small>
-            </div>
-            <div class="one-fourth">
-              {{ form.weight }}  
-            <small id="id_weight-help" class="form-text text-muted">
-              {{ form.weight.help_text }}
-            </small>
-            </div>
-           
-           
-            
-            
-          </div> {% endcomment %}
-
           
          {% endfor %}
 
-        {% comment %} <table>
-          {% for form in formset %}
-        <ul>
-            <li>{{ form.exercises}}</li>
-            <li>{{ form.sets }}</li>
-            <li>{{ form.reps }}</li>
-            <li>{{ form.weight }}</li>
-            {% if formset.can_delete %}
-                <li>{{ form.DELETE }}</li>
-            {% endif %}
-            {% if formset.can_order %}
-                <li>{{ form.ORDER }}</li>
-            {% endif %}
-        </ul>
-    {% endfor %}
-        </table> {% endcomment %} <br>
+         <br>
         <div class="d-flex justify-content-end">
           <button type="submit" class="btn btn-lg btn-light">
 

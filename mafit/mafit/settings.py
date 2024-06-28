@@ -11,8 +11,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['mafitness.sytes.net', '51.250.27.243', '127.0.0.1']
-#ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['mafitness.sytes.net', '51.250.107.86', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -24,7 +23,7 @@ INSTALLED_APPS = [
     'workouts.apps.WorkoutsConfig',
     'users.apps.UsersConfig',
     'sorl.thumbnail',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -40,6 +39,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'mafit.urls'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -65,7 +65,6 @@ WSGI_APPLICATION = 'mafit.wsgi.application'
 #     }
 # }
 
-
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
@@ -75,7 +74,7 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST', 'localhost'),
         'PORT': os.getenv('DB_PORT', '5432')
     }
-} 
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -101,23 +100,19 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-#STATIC_ROOT = BASE_DIR / 'collected_static'
-#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
-
 LOGIN_URL = 'users:login'
+
 LOGIN_REDIRECT_URL = 'workouts:index'
 
-#CSRF_TRUSTED_ORIGINS = ['*']
-CSRF_TRUSTED_ORIGINS = ["http://mafitness.sytes.net:8000", "http://51.250.27.243:8000", "http://127.0.0.1:8000"]
-    # mafitness.sytes.net
-    # "http://localhost:8000",
-    # "http://127.0.0.1:8000",]
+CSRF_TRUSTED_ORIGINS = ["http://mafitness.sytes.net:8000", "http://51.250.107.86:8000", "http://127.0.0.1:8000"]
